@@ -113,5 +113,25 @@ public class ContactController {
         model.addAttribute("contact", contact);
         return "contact-edit";
     }
+
+    @PostMapping(value = {"/contacts/{contactId}/edit"})
+    public String updateContact(Model model,
+                                @PathVariable long contactId,
+                                @ModelAttribute("contact") Contact contact) {
+        try {
+            contact.setId(contactId);
+            contactService.update(contact);
+            return "redirect:/contacts/" + contact.getId();
+        } catch (Exception ex) {
+            // log exception first,
+            // then show error
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+
+            model.addAttribute("add", false);
+            return "contact-edit";
+        }
+    }
 }
 
