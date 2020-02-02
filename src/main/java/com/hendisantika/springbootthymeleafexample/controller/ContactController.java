@@ -133,5 +133,19 @@ public class ContactController {
             return "contact-edit";
         }
     }
+
+    @GetMapping(value = {"/contacts/{contactId}/delete"})
+    public String showDeleteContactById(
+            Model model, @PathVariable long contactId) {
+        Contact contact = null;
+        try {
+            contact = contactService.findById(contactId);
+        } catch (ResourceNotFoundException ex) {
+            model.addAttribute("errorMessage", "Contact not found");
+        }
+        model.addAttribute("allowDelete", true);
+        model.addAttribute("contact", contact);
+        return "contact";
+    }
 }
 
