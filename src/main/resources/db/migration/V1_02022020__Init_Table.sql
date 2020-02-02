@@ -1,4 +1,4 @@
-CREATE TABLE contact
+CREATE TABLE tbl_contact
 (
   id bigserial NOT NULL,
   name character varying(255),

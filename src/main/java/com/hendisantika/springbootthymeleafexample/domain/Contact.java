@@ -28,7 +28,7 @@ import java.io.Serializable;
  */
 @Validated
 @Entity
-@Table(name = "contact")
+@Table(name = "tbl_contact")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
 public class Contact implements Serializable {

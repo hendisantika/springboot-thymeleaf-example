@@ -1,4 +1,4 @@
-nsert into contact (name, phone, email)
+INSERT into tbl_contact (name, phone, email)
 values 
 ('Monkey D. Luffy', '09012345678', 'luffy@strawhatpirat.es'),
 ('Roronoa Zoro', '09023456789', 'zoro@strawhatpirat.es'),
