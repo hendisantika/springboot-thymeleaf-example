@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${add} ? 'Create a Contact' : 'Edit a Contact'"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css"/>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a Contact:' : 'Edit a Contact:'"/>
+<a th:href="@{/contacts}">Back to Contact List</a>
+<br/><br/>
+<form method="POST"
+      th:action="${add} ? @{/contacts/add} : @{/contacts/{contactId}/edit(contactId=${contact.id})}"
+      th:object="${contact}">
+    <table border="0">
+        <tr th:if="${contact.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${contact.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td><input th:field="*{name}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>:</td>
+            <td><input th:field="*{phone}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td><input th:field="*{email}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>:</td>
+            <td><input size="50" th:field="*{address1}" type="text"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><input size="50" th:field="*{address2}" type="text"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><input size="50" th:field="*{address3}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Postal Code</td>
+            <td>:</td>
+            <td><input th:field="*{postalCode}" type="text"/></td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td>:</td>
+            <td><textarea cols="50" rows="4" th:field="*{note}"/></td>
+        </tr>
+    </table>
+    <input th:value="${add} ? 'Create' : 'Update'" type="submit"/>
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div class="error" th:if="${errorMessage}" th:utext="${errorMessage}"/>
+</body>
+</html>
