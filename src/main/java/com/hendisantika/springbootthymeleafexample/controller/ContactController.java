@@ -1,5 +1,6 @@
 package com.hendisantika.springbootthymeleafexample.controller;
 
+import com.hendisantika.springbootthymeleafexample.domain.Contact;
 import com.hendisantika.springbootthymeleafexample.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,4 +41,19 @@ public class ContactController {
         return "index";
     }
 
+    @GetMapping(value = "/contacts")
+    public String getContacts(Model model,
+                              @RequestParam(value = "page", defaultValue = "1") int pageNumber) {
+        List<Contact> contacts = contactService.findAll(pageNumber, ROW_PER_PAGE);
+
+        long count = contactService.count();
+        boolean hasPrev = pageNumber > 1;
+        boolean hasNext = (pageNumber * ROW_PER_PAGE) < count;
+        model.addAttribute("contacts", contacts);
+        model.addAttribute("hasPrev", hasPrev);
+        model.addAttribute("prev", pageNumber - 1);
+        model.addAttribute("hasNext", hasNext);
+        model.addAttribute("next", pageNumber + 1);
+        return "contact-list";
+    }
 }
