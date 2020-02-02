@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -78,6 +80,25 @@ public class ContactController {
         model.addAttribute("contact", contact);
 
         return "contact-edit";
+    }
+
+    @PostMapping(value = "/contacts/add")
+    public String addContact(Model model,
+                             @ModelAttribute("contact") Contact contact) {
+        try {
+            Contact newContact = contactService.save(contact);
+            return "redirect:/contacts/" + newContact.getId();
+        } catch (Exception ex) {
+            // log exception first,
+            // then show error
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+
+            //model.addAttribute("contact", contact);
+            model.addAttribute("add", true);
+            return "contact-edit";
+        }
     }
 }
 
