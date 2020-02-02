@@ -84,5 +84,8 @@ public class ContactService {
         }
     }
 
+    public Long count() {
+        return contactRepository.count();
+    }
 
 }
