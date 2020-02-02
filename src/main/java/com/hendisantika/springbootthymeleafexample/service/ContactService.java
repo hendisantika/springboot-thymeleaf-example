@@ -1,5 +1,7 @@
 package com.hendisantika.springbootthymeleafexample.service;
 
+import com.hendisantika.springbootthymeleafexample.domain.Contact;
+import com.hendisantika.springbootthymeleafexample.exception.ResourceNotFoundException;
 import com.hendisantika.springbootthymeleafexample.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,13 @@ public class ContactService {
 
     private boolean existsById(Long id) {
         return contactRepository.existsById(id);
+    }
+
+    public Contact findById(Long id) throws ResourceNotFoundException {
+        Contact contact = contactRepository.findById(id).orElse(null);
+        if (contact == null) {
+            throw new ResourceNotFoundException("Cannot find Contact with id: " + id);
+        } else return contact;
     }
 
 }
