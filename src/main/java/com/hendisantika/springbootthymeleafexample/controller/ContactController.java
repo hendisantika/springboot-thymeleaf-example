@@ -100,5 +100,18 @@ public class ContactController {
             return "contact-edit";
         }
     }
+
+    @GetMapping(value = {"/contacts/{contactId}/edit"})
+    public String showEditContact(Model model, @PathVariable long contactId) {
+        Contact contact = null;
+        try {
+            contact = contactService.findById(contactId);
+        } catch (ResourceNotFoundException ex) {
+            model.addAttribute("errorMessage", "Contact not found");
+        }
+        model.addAttribute("add", false);
+        model.addAttribute("contact", contact);
+        return "contact-edit";
+    }
 }
 
