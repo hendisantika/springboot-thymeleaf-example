@@ -76,4 +76,13 @@ public class ContactService {
         }
     }
 
+    public void deleteById(Long id) throws ResourceNotFoundException {
+        if (!existsById(id)) {
+            throw new ResourceNotFoundException("Cannot find contact with id: " + id);
+        } else {
+            contactRepository.deleteById(id);
+        }
+    }
+
+
 }
