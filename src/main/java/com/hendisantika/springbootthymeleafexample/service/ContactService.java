@@ -1,6 +1,8 @@
 package com.hendisantika.springbootthymeleafexample.service;
 
 import com.hendisantika.springbootthymeleafexample.domain.Contact;
+import com.hendisantika.springbootthymeleafexample.exception.BadResourceException;
+import com.hendisantika.springbootthymeleafexample.exception.ResourceAlreadyExistsException;
 import com.hendisantika.springbootthymeleafexample.exception.ResourceNotFoundException;
 import com.hendisantika.springbootthymeleafexample.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class ContactService {
     }
 
     public Contact findById(Long id) throws ResourceNotFoundException {
-        Contact contact = contactRepository.findById(id).orElse(null);
+        Contact contact = contactRepository.findById(id).orElseThrow(null);
         if (contact == null) {
             throw new ResourceNotFoundException("Cannot find Contact with id: " + id);
         } else return contact;
@@ -43,6 +46,20 @@ public class ContactService {
                 Sort.by("id").ascending());
         contactRepository.findAll(sortedByIdAsc).forEach(contacts::add);
         return contacts;
+    }
+
+    public Contact save(Contact contact) throws BadResourceException, ResourceAlreadyExistsException {
+        if (!StringUtils.isEmpty(contact.getName())) {
+            if (contact.getId() != null && existsById(contact.getId())) {
+                throw new ResourceAlreadyExistsException("Contact with id: " + contact.getId() +
+                        " already exists");
+            }
+            return contactRepository.save(contact);
+        } else {
+            BadResourceException exc = new BadResourceException("Failed to save contact");
+            exc.addErrorMessage("Contact is null or empty");
+            throw exc;
+        }
     }
 
 }
