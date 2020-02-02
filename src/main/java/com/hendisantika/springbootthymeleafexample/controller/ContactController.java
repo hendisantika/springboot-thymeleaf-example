@@ -147,5 +147,19 @@ public class ContactController {
         model.addAttribute("contact", contact);
         return "contact";
     }
+
+    @PostMapping(value = {"/contacts/{contactId}/delete"})
+    public String deleteContactById(
+            Model model, @PathVariable long contactId) {
+        try {
+            contactService.deleteById(contactId);
+            return "redirect:/contacts";
+        } catch (ResourceNotFoundException ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
+            return "contact";
+        }
+    }
 }
 
