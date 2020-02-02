@@ -70,5 +70,14 @@ public class ContactController {
         model.addAttribute("contact", contact);
         return "contact";
     }
+
+    @GetMapping(value = {"/contacts/add"})
+    public String showAddContact(Model model) {
+        Contact contact = new Contact();
+        model.addAttribute("add", true);
+        model.addAttribute("contact", contact);
+
+        return "contact-edit";
+    }
 }
 
