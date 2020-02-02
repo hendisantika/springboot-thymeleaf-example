@@ -18,5 +18,8 @@ public class ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
+    private boolean existsById(Long id) {
+        return contactRepository.existsById(id);
+    }
 
 }
